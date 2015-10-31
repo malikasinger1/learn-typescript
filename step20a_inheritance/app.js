@@ -68,12 +68,25 @@ var Cat = (function (_super) {
 var a = new Snake("Python");
 a.move(5); //Snake move method is called not Animals, this is because of polymorphism
 var a1 = new Horse("Rocket");
-var h = a1; //explicit casting needed to up cast
-var d1 = new Donkey("Worker", 200); //this is possible because of ducktypeing not because of inheritance
-var d2 = d1;
+var h = a1; //explicit casting not require because Child object have same properties and fuctions
+var h2 = a1; //explicit will also works but not needed
+var a2 = new Donkey("Worker", 100);
+var h3 = a2; //explicit casting require because Child object have additional properties or functions
+var h4 = a2; // Error -- will not work, explicit casting is required as above
+var d1 = new Donkey("Worker", 200); //this is possible see below link for detials,
+//https://github.com/Microsoft/TypeScript/issues/5303
+// object freshness applied to object literals not on class object 
+// If you'd like to prevent Animal from being assigned to a Human, you can add a private property to Animal,
+// since private and protected properties need to originate from the same declaration to be compatible.
+console.log("is Animal? " + (d1 instanceof Animal)); // true
+console.log("is Donkey? " + (d1 instanceof Donkey)); // true
+console.log("is Horse? " + (d1 instanceof Horse)); // false -- 
+console.log("is Horse? " + (typeof d1)); // false --
+var d2 = d1; // explicit casting is required 
 var s1 = a; //explicit casting needed because Snake has an additional method bite()
 var s2 = a; //alternative casting syntax
 var h1 = new Cat("Kitten"); //why is this allowed? Because it has same properties and methods (structural type) not because of inheritance
+//https://github.com/Microsoft/TypeScript/issues/5303
 //**************************************************
 //http://stackoverflow.com/questions/30819663/call-an-overridden-method-from-super-class-in-typescript
 var A = (function () {
